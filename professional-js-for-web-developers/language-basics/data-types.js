@@ -27,6 +27,8 @@ Boolean(mark); //False
 
 var numero = 100;
 //Number - "number" if the value is a number
+var intNum = 56; //Integer
+var octalNum = 070; // octal for 56;
 
 var message = 'I am string';
 // - "string" if the value is a string
