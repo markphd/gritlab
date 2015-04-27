@@ -132,7 +132,10 @@ alert(result);    //this line never executes
 // You can also use this behavior to avoid assigning a null or undefined value to a variable. 
 var myObject = preferredObject || backupObject;
 
-// Multiplicative Operators
+/////////////////////////////
+//Multiplicative Operators //
+/////////////////////////////
+
 var result = 34 * 56;
 
 // Divide
@@ -197,3 +200,45 @@ var result1 = NaN < 3;     //false
 var result2 = NaN >= 3;    //false
 // In most comparisons, if a value is not less than another, it is always greater than or equal to it. 
 // When using NaN, however, both comparisons return false.
+
+// Equality Operators
+// Determining whether two variables are equivalent is one of the most important operations in programming. 
+
+// Equal and Not Equal
+
+// Identically Equal and Not Identically Equal
+// The identically equal and not identically equal operators do the same thing as equal and not equal, 
+// except that they do not convert operands before testing for equality
+var result1 = ("55" == 55);    //true - equal because of conversion
+var result2 = ("55" === 55);   //false - not equal because different data types
+
+// Note 	A.K.A Strict quality
+// Because of the type conversion issues with the equal and not-equal operators, 
+// it is recommended to use identically equal and not identically equal instead. 
+// This helps to maintain data type integrity throughout your code.
+
+// Conditional Operator
+// The conditional operator is one of the most versatile in ECMAScript, 
+// and it takes on the same form as in Java, which is as follows:
+variable = boolean_expression ? true_value : false_value;
+
+var max = (numl > num2) ? numl : num2;
+
+Assignment Operators
+
+// Simple assignment is done with the equal sign (=) 
+// and simply assigns the value on the right to the variable on the left
+var mark = "name";
+
+// Compound Assignments
+// Multiply/assign (*=)
+// Divide/assign (/=)
+// Modulus/assign (%=)
+// Add/assign (+=)
+// Subtract/assign (-=)
+// Left shift/assign (<<=)
+// Signed right shift/assign (>>=)
+// Unsigned right shift/assign (>>>=)
+
+// Comma Operator
+var numl=l, num2=2, num3=3;
