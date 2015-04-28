@@ -64,3 +64,84 @@ console.log(z); // 'i am z'
 for (var propName in window) {
     document.write(propName);
 }
+
+// Labeled statement
+start: for (var i=0; i < count; i++) { alert(i);
+}
+// In this example, the label start can be referenced later by 
+// using the break or continue statement.
+
+
+// The break and continue Statements
+var num = 0;
+for (var i=1; i < 10; i++) { if (i % 5 == 0) {
+	break; 
+	}
+	num++; 
+}
+alert(num); //4
+// in this example loop breaks when i % 5 == 0 and exits out of loop
+
+var num = 0;
+for (var i=1; i < 10; i++) {
+	if (i % 5 == 0) {
+		continue;
+	};
+	num++
+};
+alert(num);
+// in this example when if statement is true, it returns to the loop but 
+// when initialization (i=10) is met, the last increment didn't occur
+
+
+var num = 0;
+outermost:
+	for (var i=0; i < 10; i++) {
+		for (var j=0; j < 10; j++) { if (i == 5 && j == 5) {
+			break outermost; 
+		}
+		num++; 
+	}
+}
+alert(num); //55
+
+// The with Statement
+with(location){
+var qs = search.substring(1); var hostName = hostname;
+var url = href;
+}
+
+// In strict mode, the with statement is not allowed and is considered a syntax error.
+// It is widely considered a poor practice to use the with statement in production code because of its negative performance impact and the difficulty in debugging code contained in the with statement.
+
+
+// The switch Statement
+
+switch (i) {
+	case 25:
+		alert("25");
+		break;
+	case 35:
+		alert("35");
+		break;
+	case 45:
+		alert("45");
+		break;
+	default:
+		alert("Other");
+}
+
+//switch with different data types
+switch ('hello world') { 
+	case 'hello' + ' world':
+		alert('Greeting was found.');
+		break;
+	case 'goodbye':
+		alert('Closing was found.');
+		break; 
+	default:
+		alert('Unexpected message was found.');
+}
+
+// The switch statement compares values using the identically equal operator, 
+// so no type coercion occurs (for example, the string "10" is not equal to the number 10).
