@@ -46,4 +46,23 @@ howManyArgs('string', 45); //2
 howManyArgs(); //0 
 howManyArgs(12); //1
 
+// arguments correspond to the value of num1 so they can be used interchangeably
+function doAdd(num1, num2) {
+    if(arguments.length == 1) {
+		alert(num1 + 10);
+    } else if (arguments.length == 2) {
+		alert(arguments[0] + num2);
+	}
+}
 
+// No Overloading
+// ECMAScript functions cannot be overloaded in the traditional sense
+
+// If two functions are defined to have the same name in ECMAScript, it is the last function that becomes the owner of that name.
+function addSomeNumber(num){
+	return num + 100;
+}
+function addSomeNumber(num) {
+	return num + 200;
+}
+var result = addSomeNumber(100);
