@@ -1,0 +1,1 @@
+// ECMAScript variables may contain two different types of data: primitive values and reference values. Primitive values are simple atomic pieces of data, while reference values are objects that may be made up of multiple values.
