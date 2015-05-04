@@ -339,15 +339,3 @@ alert(sum); //15
 // The first time the callback function is executed, prev is 1 and cur is 2. The second time, prev is 3 (the result of adding 1 and 2), and cur is 3 (the third item in the array). This sequence continues until all items have been visited and the result is returned.
 
 // The decision to use reduce() or reduceRight() depends solely on the direction in which the items in the array should be visited. They are exactly equal in every other way.
-
-
-
-
-
-
-
-
-
-
-
-
