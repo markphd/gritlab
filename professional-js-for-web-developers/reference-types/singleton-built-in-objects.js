@@ -93,3 +93,57 @@ alert(min);    //3
 
 // These methods are useful for avoiding extra loops and if statements to determine the maximum value out of a group of numbers.
 
+// To find the maximum or the minimum value in an array, you can use the apply() method as follows:
+
+   var values = [1, 2, 3, 4, 5, 6, 7, 8];
+   var max = Math.max.apply(Math, values);
+// The key to this technique is to pass in the Math object as the first argument of apply() so that the this value is set appropriately. Then you can pass an array in as the second argument.
+
+// Rounding Methods
+// The next group of methods has to do with rounding decimal values into integers. Three methods—Math.ceil(), Math.floor(), and Math.round()
+
+alert(Math.ceil(25.9));      //26
+alert(Math.ceil(25.5));      //26
+alert(Math.ceil(25.1));      //26
+
+alert(Math.round(25.9));     //26
+alert(Math.round(25.5));     //26
+alert(Math.round(25.1));     //25
+
+alert(Math.floor(25.9));     //25
+alert(Math.floor(25.5));     //25
+alert(Math.floor(25.1));     //25
+
+// The random() Method
+// The Math.random() method returns a random number between the 0 and the 1, not including either 0 or 1.
+
+// You can use Math.random() to select numbers within a certain integer range by using the following formula:
+number = Math.floor(Math.random() * total_number_of_choices + first_possible_value);
+
+// The Math.floor() method is used here because Math.random() always returns a decimal value, meaning that multiplying it by a number and adding another still yields a decimal value. So, if you wanted to select a number between 1 and 10, the code would look like this:
+var num = Math.floor(Math.random() * 10 + 1);
+
+// If you want to select a number between 2 and 10, then the code would look like this:
+
+var num = Math.floor(Math.random() * 9 + 2);
+// There are only nine numbers when counting from 2 to 10, so the total number of choices is nine, with the first possible value being 2.
+
+function selectFrom(lowerValue, upperValue) {
+   var choices = upperValue - lowerValue + 1;
+   return Math.floor(Math.random() * choices + lowerValue);
+}
+
+var num = selectFrom(2,10);
+alert(num);  //number between 2 and 10, inclusive
+//  the function selectFrom() accepts two arguments: the lowest value that should be returned and the highest value that should be returned. The number of choices is calculated by subtracting the two values and adding one and then applying the previous formula to those numbers
+
+// Using the function, it's easy to select a random item from an array, as shown here:
+
+var colors = ["red", "green", "blue", "yellow", "black", "purple", "brown"];
+var color = colors[selectFrom(0, colors.length-1)];
+
+// In this example, the second argument to selectFrom() is the length of the array minus 1, which is the last position in an array.
+
+// Other Methods
+// The Math object has a lot of methods related to various simple and higher-level mathematical operations.
+
