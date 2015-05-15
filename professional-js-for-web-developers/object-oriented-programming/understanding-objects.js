@@ -40,4 +40,51 @@ var person = {
 // Here, the property called name is created and a value of "Nicholas" is assigned. That means [[Value]] is set to "Nicholas", and any changes to that value are stored in this location.
 
 
+//  once a property has been defined as nonconfigurable, it cannot become configurable again.
+var person = {};
+   Object.defineProperty(person, "name", {
+           configurable: false,
+           value: "Nicholas"
+   });
+
+   //throws an error
+   Object.defineProperty(person, "name", {
+          configurable: true,
+          value: "Nicholas"
+      });
+
+// So although you can call Object.defineProperty() multiple times for the same property, there are limits once configurable has been set to false.
+
+
+// Accessor Properties
+// Accessor properties do not contain a data value. Instead, they contain a combination of a getter function and a setter function (though both are not necessary). 
+
+// Accessor properties have four attributes:
+// [[Configurable]]—Indicates if the property may be redefined by removing the property via delete, changing the property's attributes, or changing the property into a data property. By default, this is true for all properties defined directly on an object.
+// [[Enumerable]]—Indicates if the property will be returned in a for-in loop. By default, this is true for all properties defined directly on an object.
+// [[Get]]—The function to call when the property is read from. The default value is undefined.
+// [[Set]]—The function to call when the property is written to. The default value is undefined.
+// It is not possible to define an accessor property explicitly; you must use Object.defineProperty()
+
+// It is not possible to define an accessor property explicitly; you must use Object.defineProperty()
+var book = {
+     _year: 2004,
+     edition: 1
+};
+
+Object.defineProperty(book, "year", {
+   get: function(){
+        return this._year;
+   },
+   set: function(newValue){
+
+       if (newValue > 2004) {
+            this._year = newValue;
+            this.edition += newValue - 2004;
+       }
+   }
+});
+
+book.year = 2005;
+alert(book.edition);    //2
 
