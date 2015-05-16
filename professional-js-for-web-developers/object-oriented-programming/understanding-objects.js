@@ -88,3 +88,100 @@ Object.defineProperty(book, "year", {
 book.year = 2005;
 alert(book.edition);    //2
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// The underscore on _year is a common notation to indicate that a property is not intended to be accessed from outside of the object's methods. //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var book = {
+   _year: 2004,
+   edition: 1
+};
+
+//legacy accessor support
+book.__defineGetter__("year", function(){
+    return this._year;
+});
+
+book.__defineSetter__("year", function(newValue){
+    if (newValue > 2004) {
+        this._year = newValue;
+        this.edition += newValue - 2004;
+    }
+});
+
+book.year = 2005;
+alert(book.edition);   //2
+
+// There is no way to modify [[Configurable]] or [[Enumerable]] in browsers that don't support Object.defineProperty().
+
+// Defining Multiple Properties
+// the Object.defineProperties() method. This method allows you to define multiple properties using descriptors at once. There are two arguments: the object on which to add or modify the properties and an object whose property names correspond to the properties' names to add or modify.
+
+var book = {};
+
+Object.defineProperties(book, {
+      _year: {
+             value: 2004
+    },
+
+    edition: {
+          value: 1
+    },
+
+    year: {
+          get: function(){
+               return this._year;
+        },
+
+        set: function(newValue){
+             if (newValue > 2004) {
+                  this._year = newValue;
+                  this.edition += newValue - 2004;
+            }
+        }
+    }
+});
+
+// he resulting object is identical to the example in the previous section. The only difference is that all of these properties are created at the same time.
+
+// Reading Property Attributes
+// It's also possible to retrieve the property descriptor for a given property by using the ECMAScript 5 Object.getOwnPropertyDescriptor() method. 
+// The return value is an object with properties for configurable, enumerable, get, and set for accessor properties or configurable, enumerable, writable, and value for data properties.
+
+var book = {};
+
+Object.defineProperties(book, {
+      _year: {
+             value: 2004
+    },
+
+   edition: {
+         value: 1
+    },
+
+   year: {
+       get: function(){
+           return this._year;
+    },
+
+       set: function(newValue){
+             if (newValue > 2004) {
+                  this._year = newValue;
+
+               this.edition += newValue - 2004;
+           }
+       }
+   }
+});
+
+var descriptor = Object.getOwnPropertyDescriptor(book, "_year");
+alert(descriptor.value);           //2004
+alert(descriptor.configurable);   //false
+alert(typeof descriptor.get);      //"undefined"
+
+var descriptor = Object.getOwnPropertyDescriptor(book, "year");
+alert(descriptor.value);          //undefined
+alert(descriptor.enumerable);     //false
+alert(typeof descriptor.get);     //"function"
+ 
+// For the data property _year, value is equal to the original value, configurable is false, and get is undefined. For the accessor property year, value is undefined, enumerable is false, and get is a pointer to the specified getter function.
