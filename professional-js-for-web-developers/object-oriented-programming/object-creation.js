@@ -155,3 +155,90 @@ alert(person1.sayName == person2.sayName);  //true
 // Each instance of Person, person1, and person2 has internal properties that point back to Person.prototype only; 
 // each has no direct relationship with the constructor.
 
+// Even though [[Prototype]] is not accessible in all implementations, the isPrototypeOf() method can be used to determine if this relationship exists between objects. Essentially, isPrototypeOf() returns true if [[Prototype]] points to the prototype on which the method is being called, as shown here:
+
+alert(Person.prototype.isPrototypeOf(person1));  //true
+alert(Person.prototype.isPrototypeOf(person2));  //true
+
+// ECMAScript 5 adds a new method called Object.getPrototypeOf(), which returns the value of [[Prototype]] in all supporting implementations. For example:
+
+alert(Object.getPrototypeOf(person1) == Person.prototype);  //true
+alert(Object.getPrototypeOf(person1).name);  //"Nicholas
+
+// you are able to retrieve an object's prototype easily, which becomes important once you want to implement inheritance using the prototype
+
+// The constructor property mentioned earlier exists only on the prototype and so is accessible from object instances.
+
+// If you add a property to an instance that has the same name as a property on the prototype, you create the property on the instance, which then masks the property on the prototype
+function Person(){
+}
+
+Person.prototype.name = "Nicholas";
+Person.prototype.age = 29;
+Person.prototype.job = "Software Engineer";
+Person.prototype.sayName = function(){
+          alert(this.name);
+};
+
+var person1 = new Person();
+var person2 = new Person();
+
+person1.name = "Greg";
+alert(person1.name);   //"Greg" - from instance
+alert(person2.name);   //"Nicholas" - from prototype
+
+// In this example, the name property of person1 is shadowed by a new value. Both personi.name and person2.name still function appropriately, returning "Greg" (from the object instance) and "Nicholas" (from the prototype), respectively. When person1.name was accessed in the alert(), its value was read, so the search began for a property called name on the instance. Since the property exists, it is used without searching the prototype.
+
+// Even setting the property to null only sets the property on the instance and doesn't restore the link to the prototype. The delete operator, however, completely removes the instance property and allows the prototype property to be accessed again
+
+function Person(){
+}
+
+Person.prototype.name = "Nicholas";
+Person.prototype.age = 29;
+Person.prototype.job = "Software Engineer";
+Person.prototype.sayName = function(){
+   alert(this.name);
+};
+
+var person1 = new Person();
+var person2 = new Person();
+
+person1.name = "Greg";
+alert(person1.name);   //"Greg" - from instance
+alert(person2.name);   //"Nicholas" - from prototype
+
+delete person1.name;
+alert(person1.name);   //"Nicholas" - from the prototype
+
+// The hasOwnProperty() method determines if a property exists on the instance or on the prototype.
+
+function Person(){
+}
+
+Person.prototype.name = "Nicholas";
+Person.prototype.age = 29;
+Person.prototype.job = "Software Engineer";
+Person.prototype.sayName = function(){
+ alert(this.name);
+};
+
+var person1 = new Person();
+var person2 = new Person();
+
+alert(person1.hasOwnProperty("name"));  //false
+
+person1.name = "Greg";
+alert(person1.name);   //"Greg" - from instance
+alert(person1.hasOwnProperty("name"));  //true
+
+
+alert(person2.name);   //"Nicholas" - from prototype
+alert(person2.hasOwnProperty("name"));  //false
+
+delete person1.name;
+alert(person1.name);   //"Nicholas" - from the prototype
+alert(person1.hasOwnProperty("name"));  //false
+
+// Prototypes and the in Operator
+// There are two ways to use the in operator: on its own or as a for-in loop. When used on its own, the in operator returns true when a property of the given name is accessible by the object, which is to say that the property may exist on the instance or on the prototype.
