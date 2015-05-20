@@ -1,0 +1,22 @@
+Properties and methods of XMLHttpRequest
+
+Purpose: Use this aid to obtain information on the properties and methods of the XMLHttpRequest object.
+
+You use the XMLHttpRequest object in your Ajax applications to access data from the server. You can use one or more of its properties and methods to implement client/server communication. Some of the properties of the XMLHttpRequest object are the following:
+
+    onreadystatechange - You use the onreadystatechange property to return or set the event handler for asynchronous usage of the XMLHttpRequest object.
+    readyState - The status code of the readyState property – 0 through 4 – can be used to determine the state of the request operation.
+    responseBody - Used only in IE 7 and returns the response as an array of unsigned bytes.
+    responseText - If the HTTP response is a text string, you use the responseText property to return the response as a string.
+    responseXML - When the HTTP response is an XML DOM object, you use the responseXML property to return the XML DOM object.
+    status - With the status property, you can retrieve the status code that denotes the state of the HTTP request. The status code returned is a standard HTTP status code and can thus be used to determine the status of the HTTP request – for example, a status code of 404 denotes the page was not found.
+    statusText - To obtain an easy-to-read status information about status of the HTTP request, you can use the statusText property.
+
+The XMLHttpRequest object also has the following methods you can use during implementation of client/server communication:
+
+    abort - You call the abort method to cancel the request that was sent.
+    getAllResponseHeaders - To obtain the entire set of response headers, you use the getAllResponseHeaders method.
+    getResponseHeader - If you need to retrieve a specific response header, you can use the getResponseHeader method.
+    open - The open method is used to open the request. The method takes three arguments – the method attribute, the destination URL, and the asynchronous usage mode.
+    send - The request is sent to the server by the send method.
+    setRequestHeader - When you need to create custom HTTP response headers, you can use the setRequestHeader method.
