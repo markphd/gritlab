@@ -194,6 +194,8 @@ alert(person2.name);   //"Nicholas" - from prototype
 function Person(){
 }
 
+
+
 Person.prototype.name = "Nicholas";
 Person.prototype.age = 29;
 Person.prototype.job = "Software Engineer";
@@ -242,3 +244,190 @@ alert(person1.hasOwnProperty("name"));  //false
 
 // Prototypes and the in Operator
 // There are two ways to use the in operator: on its own or as a for-in loop. When used on its own, the in operator returns true when a property of the given name is accessible by the object, which is to say that the property may exist on the instance or on the prototype.
+function Person(){
+    }
+
+    Person.prototype.name = "Nicholas";
+    Person.prototype.age = 29;
+    Person.prototype.job = "Software Engineer";
+    Person.prototype.sayName = function(){
+           alert(this.name);
+    };
+
+    var person1 = new Person();
+    var person2 = new Person();
+
+    alert(person1.hasOwnProperty("name"));  //false
+    alert("name" in person1);  //true
+
+    person1.name = "Greg";
+    alert(person1.name);   //"Greg" - from instance
+    alert(person1.hasOwnProperty("name"));  //true
+    alert("name" in person1);  //true
+
+    alert(person2.name);   //"Nicholas" - from prototype
+    alert(person2.hasOwnProperty("name"));  //false
+    alert("name" in person2);  //true
+
+    delete person1.name;
+    alert(person1.name);   //"Nicholas" - from the prototype
+    alert(person1.hasOwnProperty("name"));  //false
+    alert("name" in person1);  //true
+
+// Throughout the execution of this code, the property name is available on each object either directly or from the prototype. Therefore, calling "name" in person1 always returns true, regardless of whether the property exists on the instance.
+
+function hasPrototypeProperty(object, name){
+    return !object.hasOwnProperty(name) && (name in object);
+}
+
+// Since the in operator always returns true so long as the property is accessible by the object, 
+// and hasOwnProperty() returns true only if the property exists on the instance, 
+// a prototype property can be determined if the in operator returns true but hasOwnProperty() returns false. 
+
+function Person(){
+ }
+
+ Person.prototype.name = "Nicholas";
+ Person.prototype.age = 29;
+ Person.prototype.job = "Software Engineer";
+ Person.prototype.sayName = function(){
+        alert(this.name);
+ };
+
+ var person = new Person();
+ alert(hasPrototypeProperty(person, "name"));  //true
+
+ person.name = "Greg";
+ alert(hasPrototypeProperty(person, "name"));  //false
+
+ // In this code, the name property first exists on the prototype, so hasPrototypeProperty() returns true. 
+ // Once the name property is overwritten, it exists on the instance, so hasPrototypeProperty() returns false.
+
+
+// When using a for-in loop, all properties that are accessible by the object and can be enumerated will be returned, 
+// which includes properties both on the instance and on the prototype.
+
+// The old Internet Explorer implementation has a bug where properties that shadow non-enumerable properties will not show up in a for-in loop
+
+var o = {
+   toString : function(){
+          return "My Object";
+   }
+};
+
+for (var prop in o){
+     if (prop == "toString"){
+         alert("Found toString");   //won't display in Internet Explorer
+   }
+}
+
+// ECMAScript 5 sets [[Enumerable]] to false on the constructor and prototype properties, but this is inconsistent across implementations.
+// To retrieve a list of all enumerable instance properties on an object, you can use the ECMAScript 5 Object.keys() method, which accepts an object as its argument and returns an array of strings containing the names of all enumerable properties.
+
+function Person(){
+}
+
+Person.prototype.name = "Nicholas";
+Person.prototype.age = 29;
+Person.prototype.job = "Software Engineer";
+Person.prototype.sayName = function(){
+       alert(this.name);
+};
+
+var keys = Object.keys(Person.prototype);
+alert(keys);       //"name,age,job,sayName"
+
+var p1 = new Person();
+p1.name = "Rob";
+p1.age = 31;
+var p1keys = Object.keys(p1);
+alert(p1keys);    //"name,age"
+// Here, the keys variable is filled with an array containing "name", "age", "job", and "sayName". This is the order in which they would normally appear using for-in. 
+
+
+// If you'd like a list of all instance properties, whether enumerable or not, you can use Object.getOwnPropertyNames() in the same way:
+var keys = Object.getOwnPropertyNames(Person.prototype);
+alert(keys);   //"constructor,name,age,job,sayName"
+
+// Note the inclusion of the non-enumerable constructor property in the list of results. Both Object.keys() and Object.getOwnPropertyNames() may be suitable replacements for using for-in. 
+
+// Alternate Prototype Syntax
+// You may have noticed in the previous example that Person.prototype had to be typed out for each property and method. 
+// To limit this redundancy and to better visually encapsulate functionality on the prototype, it has become more common to simply overwrite the prototype with an object literal that contains all of the properties and methods, as in this example:
+function Person(){
+}
+
+Person.prototype = {
+  name : "Nicholas",
+  age : 29,
+  job : "Software Engineer",
+  sayName : function () {
+      alert(this.name);
+  }
+};
+
+// In this rewritten example, the Person.prototype property is set equal to a new object created 
+// with an object literal. The end result is the same, with one exception: 
+// the constructor property no longer points to Person. 
+// When a function is created, its prototype object is created and the constructor is automatically assigned. Essentially, this syntax overwrites the default prototype object completely, meaning that the constructor property is equal to that of a completely new object (the Object constructor) instead of the function itself. 
+
+var friend = new Person();
+alert(friend instanceof Object);      //true
+alert(friend instanceof Person);      //true
+alert(friend.constructor == Person);  //false
+alert(friend.constructor == Object);  //true
+
+// Here, instanceof still returns true for both Object and Person, but the constructor property is now equal to Object instead of Person. 
+// If the constructor's value is important, you can set it specifically back to the appropriate value, as shown here:
+
+function Person(){
+}
+
+Person.prototype = {
+  constructor: Person,
+  name : "Nicholas",
+  age : 29,
+  job : "Software Engineer",
+  sayName : function () {
+          alert(this.name);
+  }
+};
+
+// This code specifically includes a constructor property and sets it equal to Person, ensuring that the property contains the appropriate value.
+// Keep in mind that restoring the constructor in this manner creates a property with [[Enumerable]] set to true. 
+// Native constructor properties are not enumerable by default, so if you're using an ECMAScript 5-compliant JavaScript engine, you may wish to use Object.defineProperty() instead:
+
+function Person(){
+}
+
+Person.prototype = {
+  name : "Nicholas",
+  age : 29,
+  job : "Software Engineer",
+  sayName : function () {
+          alert(this.name);
+  }
+};
+
+//ECMAScript 5 only - restore the constructor
+Object.defineProperty(Person.prototype, "constructor", {
+  enumerable: false,
+  value: Person
+});
+
+
+// Dynamic Nature of Prototypes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
