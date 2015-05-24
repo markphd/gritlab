@@ -417,17 +417,264 @@ Object.defineProperty(Person.prototype, "constructor", {
 
 
 // Dynamic Nature of Prototypes
+// Since the process of looking up values on a prototype is a search, changes made to the prototype at any point are immediately reflected on instances,
+
+var friend= new Person();
+
+Person.prototype.sayHi = function(){
+   alert("hi");
+};
+
+friend.sayHi();   //"hi" - works!
+
+// Even though the friend instance was created prior to this change, it still has access to the new method. 
+// When friend.sayHi() is called, the instance is first searched for a property named sayHi; when it's not found, the search continues to the prototype. 
+
+// Although properties and methods may be added to the prototype at any time, 
+// and they are reflected instantly by all object instances, 
+// you cannot overwrite the entire prototype and expect the same behavior.
+
+function Person(){
+}
+
+var friend = new Person();
+
+Person.prototype = {
+      constructor: Person,
+      name : "Nicholas",
+      age : 29,
+      job : "Software Engineer",
+      sayName : function () {
+            alert(this.name);
+      }
+};
+
+friend.sayName();    //error
+
+// In this example, a new instance of Person is created before the prototype object is overwritten. 
+// When friend.sayName() is called, it causes an error, because the prototype that friend points to doesn't contain a property of that name. 
+// Overwriting the prototype on the constructor means that new instances will reference 
+// the new prototype while any previously existing object instances still reference the old prototype.
 
 
 
+// Native Object Prototypes
+// The prototype pattern is important not just for defining custom types but also because it is the pattern used to implement all of the native reference types.
+// Native object prototypes can be modified just like custom object prototypes, so methods can be added at any time.
+
+String.prototype.startsWith = function (text) {
+             return this.indexOf(text) == 0;
+       };
+
+      var msg = "Hello world!";
+      alert(msg.startsWith("Hello"));   //true
+
+// The startsWith() method in this example returns true if some given text occurs at the beginning of a string. The method is assigned to String.prototype, making it available to all strings in the environment. 
+// Since msg is a string, the String primitive wrapper is created behind the scenes, making startsWith() accessible.
+
+// Although possible, it is not recommended to modify native object prototypes in a production environment. 
+// This can often cause confusion and create possible name collisions if a method that didn't exist natively in one browser is implemented natively in another. 
+// It's also possible to accidentally overwrite native methods.
 
 
+// Problems with Prototypes
+// The prototype pattern isn't without its faults. 
+// For one, it negates the ability to pass initialization arguments into the constructor, 
+// meaning that all instances get the same property values by default. 
+// Although this is an inconvenience, it isn't the biggest problem with prototypes. 
+// The main problem comes with their shared nature.
+
+// The real problem occurs when a property contains a reference value.
+
+function Person(){
+}
+
+Person.prototype = {
+  constructor: Person,
+  name : "Nicholas",
+  age : 29,
+  job : "Software Engineer",
+  friends : ["Shelby", "Court"],
+  sayName : function () {
+      alert(this.name);
+  }
+};
+
+var person1 = new Person();
+var person2 = new Person();
+
+person1.friends.push("Van");
+
+alert(person1.friends);     //"Shelby,Court,Van"
+alert(person2.friends);     //"Shelby,Court,Van"
+alert(person1.friends === person2.friends);  //true
+
+// The person1.friends array is altered by adding another string. 
+// Because the friends array exists on Person.prototype, not on person1, the changes made are also reflected on person2.friends (which points to the same array). If the intention is to have an array shared by all instances, then this outcome is okay. Typically, though, instances want to have their own copies of all properties. 
+// This is why the prototype pattern is rarely used on its own.
 
 
+// Combination Constructor/Prototype Pattern
+// The most common way of defining custom types is to combine the constructor and prototype patterns.
+// The constructor pattern defines instance properties, whereas the prototype pattern defines methods and shared properties. With this approach, each instance ends up with its own copy of the instance properties, but they all share references to methods, conserving memory. 
+// This pattern allows arguments to be passed into the constructor as well, effectively combining the best parts of each pattern.
+
+function Person(name, age, job){
+ this.name = name;
+ this.age = age;
+ this.job = job;
+ this.friends = ["Shelby", "Court"];
+}
+
+Person.prototype = {
+ constructor: Person,
+ sayName : function () {
+       alert(this.name);
+   }
+};
+
+var person1 = new Person("Nicholas", 29, "Software Engineer");
+var person2 = new Person("Greg", 27, "Doctor");
+
+person1.friends.push("Van");
+
+alert(person1.friends);    //"Shelby,Court,Van"
+alert(person2.friends);    //"Shelby,Court"
+alert(person1.friends === person2.friends);  //false
+alert(person1.sayName === person2.sayName);  //true
+
+// Note that the instance properties are now defined solely in the constructor, 
+// and the shared property constructor and the method sayName() are defined on the prototype. 
+// When person1.friends is augmented by adding a new string, person2.friends is not affected, 
+// because they each have separate arrays.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// The hybrid constructor/prototype pattern is the most widely used and accepted practice for defining custom reference types in ECMAScript. Generally speaking, this is the default pattern to use for defining reference types. //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+// Dynamic Prototype Pattern
+// Developers coming from other OO languages may find the visual separation between the constructor and the prototype confusing. 
+// The dynamic prototype pattern seeks to solve this problem by encapsulating all of the information within the constructor while maintaining the benefits of using both a constructor and a prototype by initializing the prototype inside the constructor, but only if it is needed. 
+
+// You can determine if the prototype needs to be initialized by checking for the existence of a method that should be available.
+
+function Person(name, age, job){
+
+ //properties
+ this.name = name;
+ this.age = age;
+ this.job = job;
+
+ //methods
+ if (typeof this.sayName != "function"){
+
+      Person.prototype.sayName = function(){
+      alert(this.name);
+      };
+  }
+}
+
+var friend = new Person("Nicholas", 29, "Software Engineer");
+friend.sayName();
+
+// The highlighted section of code inside the constructor adds the sayName() method if it doesn't already exist. 
+// This block of code is executed only the first time the constructor is called. 
+
+// Remember that changes to the prototype are reflected immediately in all instances, so this approach works perfectly. 
+// The if statement may check for any property or method that will be present once initialized—there's no need 
+// for multiple if statements to check each property or method; any one will do. 
+// This pattern preserves the use of instanceof in determining what type of object was created.
+
+// You cannot overwrite the prototype using an object literal when using the dynamic prototype pattern. As described previously, 
+// overwriting a prototype when an instance already exists effectively cuts off that instance from the new prototype.
 
 
+// Parasitic Constructor Pattern
+// The parasitic constructor pattern is typically a fallback when the other patterns fail. 
+// The basic idea of this pattern is to create a constructor that simply wraps the creation and return of another object while looking like a typical constructor. 
+
+function Person(name, age, job){
+    var o = new Object();
+    o.name = name;
+    o.age = age;
+    o.job = job;
+    o.sayName = function(){
+    alert(this.name);
+    };
+    return o;
+}
+
+var friend = new Person("Nicholas", 29, "Software Engineer");
+friend.sayName();  //"Nicholas"
+
+// This is exactly the same as the factory pattern except that the function is called as a constructor, using the new operator.
+// When a constructor doesn't return a value, it returns the new object instance by default. 
+// Adding a return statement at the end of a constructor allows you to override the value that is returned when the constructor is called.
 
 
+// This pattern allows you to create constructors for objects that may not be possible otherwise. For example, you may want to create a special array that has an extra method. 
+// Since you don't have direct access to the Array constructor, this pattern works:
+
+function SpecialArray(){
+  //create the array
+  var values = new Array();
+
+  //add the values
+  values.push.apply(values, arguments);
+
+  //assign the method
+  values.toPipedString = function(){
+  return this.join("|");
+  };
+
+  //return it
+  return values;
+}
+
+var colors = new SpecialArray("red", "blue", "green");
+alert(colors.toPipedString()); //"red|blue|green"
+
+// A few important things to note about this pattern: there is no relationship between the returned object 
+// and the constructor or the constructor's prototype; the object exists just as if it were created outside of a constructor. 
+// Therefore, you cannot rely on the instanceof operator to indicate the object type. 
+// Because of these issues, this pattern should not be used when other patterns work.
+
+
+// Durable Constructor Pattern
+// Douglas Crockford coined the term durable objects in JavaScript to refer to objects that have no public properties 
+// and whose methods don't reference the this object. Durable objects are best used in secure environments 
+// (those that forbid the use of this and new) or to protect data from the rest of the application (as in mashups). 
+// A durable constructor is a constructor that follows a pattern similar to the parasitic constructor pattern,
+// with two differences: instance methods on the created object don't refer to this, 
+// and the constructor is never called using the new operator. 
+// The Person constructor from the previous section can be rewritten as a durable constructor like this:
+
+function Person(name, age, job){
+
+ //create the object to return
+ var o = new Object();
+
+ //optional: define private variables/functions here
+
+ //attach methods
+ o.sayName = function(){
+        alert(name);
+ };
+
+ //return the object
+ return o;
+}
+
+// Note that there is no way to access the value of name from the returned object. 
+// The sayName() method has access to it, but nothing else does. 
+
+var friend = Person("Nicholas", 29, "Software Engineer");
+friend.sayName();  //"Nicholas"
+
+// The person variable is a durable object, and there is no way to access any of its data members without calling a method. Even if some other code adds methods or data members to the object, there is no way to access the original data that was passed into the constructor. 
+// Such security makes the durable constructor pattern useful when dealing with secure execution environments
+
+  
+// As with the parasitic constructor pattern, there is no relationship between the constructor and the object instance, so instanceof will not work.
 
