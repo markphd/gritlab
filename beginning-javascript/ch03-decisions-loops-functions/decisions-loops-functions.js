@@ -136,23 +136,40 @@ if ( (myAge >= 30 && myAge <= 39) || (myAge >= 80 && myAge <= 89) )
 
 
 // Executing the Same Code for Different Cases
-    switch (secretNumber)
-      {
-
-      case 1:
-      case 2:
-         document.write("Too low!");
-         break;
-
-
-      case 3:
-         document.write("You guessed the secret number!");
-         break;
+switch (secretNumber)
+{
+  case 1:
+  case 2:
+    document.write("Too low!");
+  break;
 
 
-      case 4:
-      case 5:
-         document.write("Too high!");
-         break;    
+  case 3:
+    document.write("You guessed the secret number!");
+  break;
+
+
+  case 4:
+  case 5:
+    document.write("Too high!");
+  break;    
+
+  default:
+    document.write("You did not enter a number between 1 and 5.");
+  break;
+} 
+
+// If the case statement for the value 1 is matched, execution simply continues until the break statement under case 2, so effectively you can execute the same code for both cases. 
+// the same technique is used for the case statements with values 4 and 5.
+
+
+
+// Looping
+// Looping means repeating a block of code when a condition is true. This is achieved in JavaScript with the use of two statements, the while statement and the for statement.
+// The for statement enables you to repeat a block of code a certain number of times. 
+// The for…in Loop
+// It enables you to loop through each element in the array without having to know how many elements the array actually contains.
+
+
 
 
