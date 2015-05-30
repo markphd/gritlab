@@ -67,4 +67,3 @@ return function(object1, object2){
 
 // createComparisonFunction() returns an anonymous function. The returned function will, presumably, be either assigned to a variable or otherwise called, but within createComparisonFunction() it is anonymous. 
 // Any time a function is being used as a value, it is a function expression. 
-
