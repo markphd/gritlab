@@ -120,4 +120,91 @@ function createFunctions(){
 
 
 // The this Object
+// Using the this object inside closures introduces some complex behaviors. 
+// The this object is bound at runtime based on the context in which a function is executed: 
+// when used inside global functions, this is equal to window in nonstrict mode 
+// and undefined in strict mode, whereas this is equal to the object when called as an object method. 
 
+var name = "The Window";
+
+var object = {
+  name : "My Object",
+  getNameFunc : function(){
+       return function(){
+           return this.name;
+      };
+  }
+};
+
+alert(object.getNameFunc()());  //"The Window" (in non-strict mode)
+
+// Since getNameFunc() returns a function, calling object.getNameFunc()() immediately calls the function that is returned, which returns a string. 
+// In this case, however, it returns "The Window", which is the value of the global name variable
+
+// An inner function can never access these variables directly from an outer function. 
+// It is possible to allow a closure access to a different this object by storing it in another variable that the closure can access
+
+var name = "The Window";
+
+var object = {
+	name : "My Object",
+	getNameFunc : function(){
+		var that = this;
+    return function(){
+			return that.name;
+    };
+	}
+};
+alert(object.getNameFunc()());  //"My Object"
+
+// When the closure is defined, it has access to that, since it is a uniquely named variable in the containing function. 
+// Even after the function is returned, that is still bound to object, so calling object.getNameFunc()() returns "My Object".
+	
+// Both this and arguments behave in this way. 
+// If you want access to a containing scope's arguments object, you'll need to save a reference 
+// into another variable that the closure can access.
+
+var name = "The Window";
+
+var object = {
+	name : "My Object",
+	getName: function(){
+		return this.name;
+	}
+};
+
+// The getName() method simply returns the value of this.name. Here are various ways to call object.getName() and the results:
+object.getName();      //"My Object"
+(object.getName)();    //"My Object"
+(object.getName = object.getName)();   //"The Window" in non-strict mode
+
+// It's unlikely that you'll intentionally use the patterns in lines two or three, 
+// but it is helpful to know that the value of this can change in unexpected ways when syntax is changed slightly.
+
+// Memory Leaks
+// The way closures work causes particular problems in Internet Explorer prior to version 9 because of the different garbage-collection routines used for JScript objects versus COM objects
+
+function assignHandler(){
+	var element = document.getElementById("someElement");
+	element.onclick = function(){
+		alert(element.id);
+	};
+}
+
+// This code creates a closure as an event handler on element, which in turn creates a circular reference (events are discussed in Chapter 13). The anonymous function keeps a reference to the assignHandler() function's activation object, which prevents the reference count for element from being decremented. 
+// As long as the anonymous function exists, the reference count for element will be at least 1, which means the memory will never be reclaimed.
+
+function assignHandler(){
+	var element = document.getElementById("someElement"); 
+	var id = element.id;
+	element.onclick = function(){
+		alert(id);
+	};
+	element = null;
+}
+
+// In this version of the code, a copy of element's ID is stored in a variable that is used in the closure, eliminating the circular reference. That step alone is not enough, however, to prevent the memory problem. 
+// Remember: the closure has a reference to the containing function's entire activation object, which contains element. 
+
+// Even if the closure doesn't reference element directly, a reference is still stored in the containing function's activation object. It is necessary, therefore, to set the element variable equal to null. 
+// This dereferences the COM object and decrements its reference count, ensuring that the memory can be reclaimed when appropriate.
