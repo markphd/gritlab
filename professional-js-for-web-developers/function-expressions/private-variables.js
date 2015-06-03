@@ -61,7 +61,129 @@ alert(person.getName());   //"Greg"
 
 
 // Static Private Variables
+// Privileged methods can also be created by using a private scope to define the private variables or functions. 
+
+(function(){
+
+	//private variables and functions
+	var privateVariable = 10;
+
+	function privateFunction(){
+		return false;
+	}
+
+	//constructor
+	MyObject = function(){
+	};
+
+	//public and privileged methods
+	MyObject.prototype.publicMethod = function(){
+		privateVariable++;
+		return privateFunction();
+	};
+
+})();
+
+// Public methods are defined on the prototype, as in the typical prototype pattern. 
+// Note that this pattern defines the constructor not by using a function declaration but instead by using a function expression. Function declarations always create local functions, which is undesirable in this case. For this same reason, the var keyword is not used with MyObject. 
+// Remember: initializing an undeclared variable always creates a global variable, so MyObject becomes global and available outside the private scope.
 
 
+// private variables and functions are shared among instances. Since the privileged method is defined on the prototype, all instances use that same function. 
+// The privileged method, being a closure, always holds a reference to the containing scope. 
+
+(function(){
+	var name = "";
+
+	Person = function(value){
+		name = value;
+	};
+
+	Person.prototype.getName = function(){
+		return name;
+	};
+
+	Person.prototype.setName = function (value){
+		name = value;
+	};
+})();
+
+var person1 = new Person("Nicholas");
+alert(person1.getName());   //"Nicholas"
+person1.setName("Greg");
+alert(person1.getName());   //"Greg"
+
+var person2 = new Person("Michael");
+alert(person1.getName());    //"Michael"
+alert(person2.getName());    //"Michael"
+
+// Creating static private variables in this way allows for better code reuse through prototypes, although each instance doesn't have its own private variable. Ultimately, the decision to use instance or static private variables needs to be based on your individual requirements.
+
+// Note 	
+// The farther up the scope chain a variable lookup is, the slower the lookup becomes because of the use of closures and private variables.
 
 
+// The Module Pattern
+// Singletons are objects of which there will only ever be one instance. Traditionally, singletons are created in JavaScript using object literal notation
+
+var singleton = {
+	name : value,
+	method : function () {
+		//method code here
+	}
+};
+
+The module pattern augments the basic singleton to allow for private variables and privileged methods, taking the following format:
+
+var singleton = function(){
+
+	//private variables and functions
+	var privateVariable = 10;
+
+	function privateFunction(){
+	return false;
+	}
+
+	//privileged/public methods and properties
+	return {
+
+		publicProperty: true,
+
+		publicMethod : function(){
+			privateVariable++;
+		return privateFunction();
+		}
+	};
+}();
+
+// The module pattern uses an anonymous function that returns an object. 
+// Inside of the anonymous function, the private variables and functions are defined first. After that, an object literal is returned as the function value. 
+// That object literal contains only properties and methods that should be public
+
+var application = function(){
+
+	//private variables and functions
+	var components = new Array();
+
+	//initialization
+	components.push(new BaseComponent());
+
+	//public interface
+	return {
+		getComponentCount : function(){
+			return components.length;
+		},
+
+		registerComponent : function(component){
+			if (typeof component == "object"){
+				components.push(component);
+				}
+			}
+	};
+}();
+
+// In web applications, it's quite common to have a singleton that manages application-level information. 
+// This simple example creates an application object that manages components. 
+// When the object is first created, the private components array is created and a new instance of BaseComponent is added to its list. (The code for BaseComponent is not important; it is used only to show initialization in the example.) The getComponentCount() and registerComponent() methods are privileged methods with access to the components array. 
+
+// The Module-Augmentation Pattern
