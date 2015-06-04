@@ -187,3 +187,67 @@ var application = function(){
 // When the object is first created, the private components array is created and a new instance of BaseComponent is added to its list. (The code for BaseComponent is not important; it is used only to show initialization in the example.) The getComponentCount() and registerComponent() methods are privileged methods with access to the components array. 
 
 // The Module-Augmentation Pattern
+// Another take on the module pattern calls for the augmentation of the object before returning it. 
+// This pattern is useful when the singleton object needs to be an instance of a particular 
+// type but must be augmented with additional properties and/or methods.
+
+var singleton = function(){
+
+	//private variables and functions
+	var privateVariable = 10;
+
+	function privateFunction(){
+	  return false;
+	}
+
+	//create object
+	var object = new CustomType();
+
+	//add privileged/public properties and methods
+	object.publicProperty = true;
+
+	object.publicMethod = function(){
+		privateVariable++;
+	   	return privateFunction();
+	};
+
+	//return the object
+	return object;
+}();
+
+// If the application object in the module pattern example 
+// had to be an instance of BaseComponent, the following code could be used:
+
+var application = function(){
+
+	//private variables and functions
+	var components = new Array();
+
+	//initialization
+	components.push(new BaseComponent());
+
+	//create a local copy of application
+	var app = new BaseComponent();
+
+	//public interface
+	app.getComponentCount = function(){
+	      return components.length;
+	};
+
+	app.registerComponent = function(component){
+	if (typeof component == "object"){
+	    components.push(component);
+	}
+};
+
+//return it
+return app;
+
+}();
+
+// In this rewritten version of the application singleton, the private variables are defined first, 
+// as in the previous example. The main difference is the creation of a variable named app 
+// that is a new instance of BaseComponent. 
+// This is the local version of what will become the application object. 
+// Public methods are then added onto the app object to access the private variables. 
+// The last step is to return the app object, which assigns it to application.
