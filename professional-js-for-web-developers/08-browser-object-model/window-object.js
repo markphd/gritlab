@@ -72,3 +72,20 @@ var newValue = window.oldValue;
 // however, you would probably use the top object instead of window to refer to these frames 
 // (making it top.frames[0], for instance).
 
+// Another window object is called parent. 
+// The parent object always points to the current frame's immediate parent frame. 
+// In some cases, parent may be equal to top, and when there are no frames, parent is equal to top
+
+<html>
+  <head>
+        <title>Frameset Example</title>
+  </head>
+  <frameset rows="100,*">
+       <frame src="frame.htm" name="topFrame">
+       <frameset cols="50%,50%">
+            <frame src="anotherframe.htm" name="leftFrame">
+            <frame src="anotherframeset.htm" name="rightFrame">
+           </frameset>
+  </frameset>
+</html>
+
