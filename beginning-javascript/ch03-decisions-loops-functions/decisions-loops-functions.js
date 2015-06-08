@@ -170,6 +170,8 @@ switch (secretNumber)
 // The for…in Loop
 // It enables you to loop through each element in the array without having to know how many elements the array actually contains.
 
+// The break and continue Statements
+// the break statement can also be used as part of the for and while loops when you want to exit the loop prematurely. 
 
 
 
