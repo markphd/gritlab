@@ -115,4 +115,132 @@ var newValue = window.oldValue;
 
 
 
+// Pop-up Blockers
+// If the browser's built-in pop-up blocker stopped the pop-up, then window.open() will most likely return null.
 
+var wroxWin = window.open("http://www.wrox.com", "_blank");
+if (wroxWin == null){
+    alert("The popup was blocked!");
+}
+
+// When a browser add-on or other program blocks a pop-up, window.open() typically throws an error. 
+// So to accurately detect when a pop-up has been blocked, you must check the return value and wrap 
+// the call to window.open() in a try-catch block
+
+var blocked = false;
+
+try {
+  var wroxWin = window.open("http://www.wrox.com", "_blank");
+  if (wroxWin == null){
+    blocked = true;
+  }
+} catch (ex){
+  blocked = true;
+}
+
+if (blocked){
+  alert("The popup was blocked!");
+}
+
+
+
+// Intervals and Timeouts
+// JavaScript execution in a browser is single-threaded, but does allow for the scheduling of code to run at specific points 
+// in time through the use of timeouts and intervals. Timeouts execute some code after a specified amount of time, 
+// whereas intervals execute code repeatedly, waiting a specific amount of time in between each execution.
+
+  setTimeout(function() {
+          alert("Hello world!");
+    }, 1000);
+
+// it's considered poor practice to use a string as the first argument, because it brings with it performance penalties.
+
+// The second argument, the number of milliseconds to wait, is not necessarily when the specified code will execute. 
+// JavaScript is single-threaded and, as such, can execute only one piece of code at a time. 
+// To manage execution, there is a queue of JavaScript tasks to execute. 
+// The tasks are executed in the order in which they were added to the queue. 
+// The second argument of setTimeout() tells the JavaScript engine to add this task onto the queue after a set number of milliseconds. 
+// If the queue is empty, then that code is executed immediately; if the queue is not empty, the code must wait its turn.
+
+// When setTimeout() is called, it returns a numeric ID for the timeout. 
+// The timeout ID is a unique identifier for the scheduled code that can be used to cancel the timeout. 
+// To cancel a pending timeout, use the clearTimeout() method and pass in the timeout ID
+
+var timeoutId = setTimeout(function() {
+  alert("Hello world!");
+  }, 1000);
+
+//nevermind - cancel it
+clearTimeout(timeoutId);
+
+// As long as clearTimeout() is called before the specified amount of time has passed, a timeout can be canceled completely. 
+// Calling clearTimeout() after the code has been executed has no effect.
+
+// All code executed by a timeout runs in the global scope, so the value of this inside the function will 
+// always point to window when running in nonstrict mode and undefined when running in strict mode.
+
+// The setlnterval() method lets you set up intervals, and it accepts the same arguments as setTimeout(): 
+// the code to execute (string or function) and the milliseconds to wait between executions
+
+setInterval(function() {
+  alert("Hello world!");
+}, 10000);
+
+// The setlnterval() method also returns an interval ID that can be used to cancel the interval at some point in the future. 
+// The clearlnterval() method can be used with this ID to cancel all pending intervals. 
+// This ability is more important for intervals than timeouts since, if left unchecked, they continue to execute until the page is unloaded. 
+
+var num = 0;
+var max = 10;
+var intervalId = null;
+
+function incrementNumber() {
+  num++;
+
+  //if the max has been reached, cancel all pending executions
+  if (num == max) {
+    clearInterval(intervalId);
+    alert("Done");
+  }
+}
+
+intervalId = setInterval(incrementNumber, 500);
+// the variable num is incremented every half second until it finally reaches the maximum number, at which point the interval is canceled.
+
+var num = 0;
+var max = 10;
+
+function incrementNumber() {
+  num++;
+
+  //if the max has not been reached, set another timeout
+  if (num < max) {
+    setTimeout(incrementNumber, 500);
+  } else {
+    alert("Done");
+  }
+}
+
+setTimeout(incrementNumber, 500);
+
+
+// Note that when you're using timeouts, it is unnecessary to track the timeout ID, because the execution 
+// will stop on its own and continue only if another timeout is set. 
+// This pattern is considered a best practice for setting intervals without actually using intervals. 
+// True intervals are rarely used in production environments because the time between the end of one interval and the beginning of the next is not necessarily guaranteed, and some intervals may be skipped. 
+// Using timeouts, as in the preceding example, ensures that can't happen. 
+// Generally speaking, it's best to avoid intervals.
+
+
+
+// System Dialogs
+// The browser is capable of invoking system dialogs to display to the user through the alert(), confirm(), and prompt() methods.
+
+if (confirm("Are you sure?")) {
+      alert("I'm so glad you're sure! ");
+  } else {
+      alert("I'm sorry to hear you're not sure. ");
+  }
+
+// To determine if the user clicked OK or Cancel, the confirm() method returns a Boolean value: true if OK was clicked, or false if Cancel 
+// was clicked or the dialog box was closed by clicking the X in the corner. 
