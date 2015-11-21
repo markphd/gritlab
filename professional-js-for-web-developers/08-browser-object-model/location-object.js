@@ -90,10 +90,10 @@ location.pathname = "mydir";
 <!DOCTYPE html>
 <html>
 <head>
-  <title>You won't be able to get back here</title>
+  <title>You wont be able to get back here</title>
 </head>
   <body>
-  <p>Enjoy this page for a second, because you won't be coming back here.</p>
+  <p>Enjoy this page for a second, because you wont be coming back here.</p>
   <script type="text/javascript">
                 setTimeout(function () {
                        location.replace("http://www.wrox.com/");
