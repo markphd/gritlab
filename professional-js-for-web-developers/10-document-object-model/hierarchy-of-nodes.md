@@ -55,5 +55,44 @@ The `convertToArray()` function first attempts to use the easiest manner of crea
 
 All nodes contained within a childNodes list have the same parent, so each of their parentNode properties points to the same node.
 
+Note that if there’s only one child node, both nextSibling and previousSibling will be null.
+
+#### Manipulating Nodes
+
+The most often-used method is appendChild(), which adds a node to the end of the childNodes list.
+
+	var returnedNode = someNode.appendChild(newNode);
+	alert(returnedNode == newNode);         //true
+	alert(someNode.lastChild == newNode);   //true
+
+no DOM node may exist in more than one location in a document. So if you call appendChild()and pass in the first child of a parent, as the following example shows, it will end up as the last child:
+
+	//assume multiple children for someNode
+	var returnedNode = someNode.appendChild(someNode.firstChild);
+	alert(returnedNode == someNode.firstChild);  //false
+	alert(returnedNode == someNode.lastChild);   //true
+
+The insertBefore() method accepts two arguments: the node to insert and a reference node.
+
+The replaceChild() method accepts two arguments: the node to insert and the node to replace. The node to replace is returned by the function and is removed from the document tree completely while the inserted node takes its place.
+
+To remove a node without replacing it, you can use the removeChild() method. This method accepts a single argument, which is the node to remove. 
+
+	//remove first child
+	var formerFirstChild = someNode.removeChild(someNode.firstChild);
+	                   
+	//remove last child
+	var formerLastChild = someNode.removeChild(someNode.lastChild);
+
+Not all node types can have child nodes, and these methods will throw errors if you attempt to use them on nodes that don’t support children.
+
+#### Other Methods
+
+The cloneNode() method doesn’t copy JavaScript properties that you add to DOM nodes, such as event handlers. This method copies only attributes and, optionally, child nodes. Everything else is lost.
+
+The last remaining method is normalize(). Its sole job is to deal with text nodes in a document subtree. If an empty text node is found, it is removed; if text nodes are immediate siblings, they are joined into a single text node.
+
+#### The Document Type
+
 
 
