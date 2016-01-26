@@ -94,5 +94,59 @@ The last remaining method is normalize(). Its sole job is to deal with text node
 
 #### The Document Type
 
+JavaScript represents document nodes via the Document type. In browsers, the document object is an instance of HTMLDocument (which inherits from Document) and represents the entire HTML page. The document object is a property of window and so is accessible globally. A Document node has the following characteristics:
 
+	nodeType is 9.
+	nodeName is "#document".
+	nodeValue is null.
+	parentNode is null.
+	ownerDocument is null.
+	Child nodes may be a DocumentType (maximum of one), Element (maximum of one), ProcessingInstruction, or Comment.
+
+#### Document Children
+
+There are two built-in shortcuts to child nodes. The first is the documentElement property, which always points to the <html> element in an HTML page. The document element is always represented in the childNodes list as well, but the documentElement property gives faster and more direct access to that element. 
+
+	var html = document.documentElement;      //get reference to <html>
+	alert(html === document.childNodes[0]);   //true
+	alert(html === document.firstChild);      //true
+
+Both document.documentElement and document.body are supported in all major browsers.
+
+#### Document Information
+
+The document object, as an instance of HTMLDocument, has several additional properties that standard Document objects do not have. These properties provide information about the web page that is loaded. The first such property is title, which contains the text in the <title> element and is displayed in the title bar or tab of the browser window. This property can be used to retrieve the current page title and to change the page title such that the changes are reflected in the
+
+The next three properties are all related to the request for the web page: URL, domain, and referrer. The URL property contains the complete URL of the page (the URL in the address bar), the domain property contains just the domain name of the page, and the referrer property gives the URL of the page that linked to this page.
+
+#### Locating Elements
+
+Perhaps the most common DOM activity is to retrieve references to a specific element or sets of elements to perform certain operations. This capability is provided via a number of methods on the document object. The Document type provides two methods to this end: getElementById() and getElementsByTagName().
+
+The getElementById() method accepts a single argument — the ID of an element to retrieve — and returns the element if found, or null if an element with that ID doesn’t exist. The ID must be an exact match, including character case, to the id attribute of an element on the page.
+
+The getElementsByTagName() method is another commonly used method for retrieving element references. It accepts a single argument — the tag name of the elements to retrieve — and returns a NodeList containing zero or more elements. In HTML documents, this method returns an HTMLCollection object, which is very similar to a NodeList in that it is considered a “live” collection. For example, the following code retrieves all <img> elements in the page and returns an HTMLCollection:
+
+	var images = document.getElementsByTagName("img");
+
+The HTMLCollection object has an additional method, namedItem(), that lets you reference an item in the collection via its name attribute. For example, suppose you had the following <img> element in a page:
+
+	<img src="myimage.gif" name="myImage">
+
+A reference to this <img> element can be retrieved from the images variable like this:
+
+	var myImage = images.namedItem("myImage");
+
+You can also access named items by using bracket notation, as shown in the following example:
+
+	var myImage = images["myImage"];
+
+
+#### Document Writing
+
+One of the older capabilities of the document object is the ability to write to the output stream of a web page. This capability comes in the form of four methods: write(), writeln(), open(), and close(). The write() and writeln() methods each accept a string argument to write to the output stream. write() simply adds the text as is, whereas writeln() appends a new-line character (\n) to the end of the string. 
+
+The open() and close() methods are used to open and close the web page output stream, respectively. Neither method is required to be used when write() or writeln() is used during the course of page loading.
+
+#### The Element Type
 
