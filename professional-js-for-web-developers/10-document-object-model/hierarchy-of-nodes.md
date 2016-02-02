@@ -150,3 +150,25 @@ The open() and close() methods are used to open and close the web page output st
 
 #### The Element Type
 
+The Element type represents an XML or HTML element, providing access to information such as its tag name, children, and attributes. An Element node has the following characteristics:
+
+	nodeType is 1.
+	nodeName is the element’s tag name.
+	nodeValue is null.
+	parentNode may be a Document or Element.
+	Child nodes may be Element, Text, Comment, ProcessingInstruction, CDATASection, or EntityReference.
+
+
+	var div = document.getElementById("myDiv");
+	alert(div.tagName);    //"DIV"
+	alert(div.tagName == div.nodeName);   //true
+
+#### HTML Elements
+
+All HTML elements are represented by the HTMLElement type, either directly or through subtyping. The HTMLElement inherits directly from Element and adds several properties. Each property represents one of the following standard attributes that are available on every HTML element:
+
+- id — A unique identifier for the element in the document.
+- title — Additional information about the element, typically represented as a tooltip.
+- lang — The language code for the contents of the element (rarely used).
+- dir — The direction of the language, "ltr" (left-to-right) or "rtl" (right-to-left); also rarely used.
+- className — The equivalent of the class attribute, which is used to specify CSS classes on an element. 	
