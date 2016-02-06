@@ -172,3 +172,27 @@ All HTML elements are represented by the HTMLElement type, either directly or th
 - lang — The language code for the contents of the element (rarely used).
 - dir — The direction of the language, "ltr" (left-to-right) or "rtl" (right-to-left); also rarely used.
 - className — The equivalent of the class attribute, which is used to specify CSS classes on an element. 	
+
+	<div id="myDiv" class="bd" title="Body text" lang="en" dir="ltr"></div>
+
+All of the information specified by this element may be retrieved using the following JavaScript code:
+
+	var div = document.getElementById("myDiv");
+	alert(div.id);         //"myDiv"
+	alert(div.className);  //"bd"
+	alert(div.title);      //"Body text"
+	alert(div.lang);       //"en"
+	alert(div.dir);        //"ltr"
+
+Assigning new values to properties:
+
+	div.id = "someOtherId";
+	div.className = "ft";
+	div.title = "Some other text";
+	div.lang = "fr";
+	div.dir ="rtl";	
+
+Not all of the properties effect changes on the page when overwritten. Changes to id or lang will be transparent to the user (assuming no CSS styles are based on these values), whereas changes to title will be apparent only when the mouse is moved over the element.	
+
+####  Getting Attributes
+
