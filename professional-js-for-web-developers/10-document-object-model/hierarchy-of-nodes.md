@@ -213,3 +213,52 @@ Note that attribute names are case-insensitive, so "ID" and "id" are considered 
 
 setAttribute() accepts two arguments: the name of the attribute to set and the value to set it to. If the attribute already exists, setAttribute() replaces its value with the one specified; if the attribute doesn’t exist, setAttribute() creates it and sets its value. 
 
+	div.setAttribute("id", "someOtherId");
+	div.setAttribute("class", "ft");
+	div.setAttribute("title", "Some other text");
+	div.setAttribute("lang","fr");
+	div.setAttribute("dir", "rtl");
+
+### Removing Attributes
+
+removeAttribute(), which removes the attribute from the element altogether. This does more than just clear the attribute’s value; it completely removes the attribute from the element
+
+### The attributes Property
+
+The Element type is the only DOM node type that uses the attributes property. The attributes property contains a NamedNodeMap, which is a “live” collection similar to a NodeList. Every attribute on an element is represented by an Attr node, each of which is stored in the NamedNodeMap object. A NamedNodeMap object has the following methods:
+
+- getNamedItem(name) — Returns the node whose nodeName property is equal to name.
+
+- removeNamedItem(name) — Removes the node whose nodeName property is equal to name from the list.
+
+- setNamedItem(node) — Adds the node to the list, indexing it by its 
+nodeName property.
+
+- item(pos) — Returns the node in the numerical position pos.
+
+To retrieve id attribute of an element:
+
+	var id = element.attributes.getNamedItem("id").nodeValue;
+
+Shorthand code:
+
+	var id = element.attributes["id"].nodeValue;
+
+It’s possible to use this notation to set attribute values as well, retrieving the attribute node and then setting the nodeValue to a new value, as this example shows:
+
+	element.attributes["id"].nodeValue = "someOtherId";	
+
+The removeNamedItem() method functions the same as the removeAttribute() method on the element — it simply removes the attribute with the given name. The following example shows how the sole difference is that removeNamedItem() returns the Attr node that represented the attribute:
+
+	var oldAttr = element.attributes.removeNamedItem("id");
+
+The setNamedItem() is a rarely used method that allows you to add a new attribute to the element by passing in an attribute node, as shown in this example:
+
+	element.attributes.setNamedItem(newAttr);
+
+Generally speaking, because of their simplicity, the getAttribute(), removeAttribute(), and setAttribute() methods are preferred to using any of the preceding attributes methods.
+
+The one area where the attributes property is useful is to iterate over the attributes on an element. This is done most often when serializing a DOM structure into an XML or HTML string. 
+
+### Creating Elements
+
