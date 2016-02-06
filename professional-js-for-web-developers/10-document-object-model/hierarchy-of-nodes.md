@@ -196,3 +196,20 @@ Not all of the properties effect changes on the page when overwritten. Changes t
 
 ####  Getting Attributes
 
+The three primary DOM methods for working with attributes are getAttribute(), setAttribute(), and removeAttribute(). 
+
+	var div = document.getElementById("myDiv");
+	alert(div.getAttribute("id"));         //"myDiv"
+	alert(div.getAttribute("class"));      //"bd"
+	alert(div.getAttribute("title"));      //"Body text"
+	alert(div.getAttribute("lang"));       //"en"
+	alert(div.getAttribute("dir"));        //"ltr"
+
+The getAttribute() method can also retrieve the value of custom attributes that aren’t part of the formal HTML language. 
+
+Note that attribute names are case-insensitive, so "ID" and "id" are considered the same attribute. Also note that, according to HTML5, custom attributes should be prepended with data- in order to validate.
+
+### Setting Attributes
+
+setAttribute() accepts two arguments: the name of the attribute to set and the value to set it to. If the attribute already exists, setAttribute() replaces its value with the one specified; if the attribute doesn’t exist, setAttribute() creates it and sets its value. 
+
