@@ -262,3 +262,16 @@ The one area where the attributes property is useful is to iterate over the attr
 
 ### Creating Elements
 
+New elements can be created by using the document.createElement() method. This method accepts a single argument, which is the tag name of the element to create.
+
+	var div = document.createElement("div");
+
+	div.id = "myNewDiv";
+	div.className = "box";
+
+The element can be added to the document tree using appendChild(), insertBefore(), or replaceChild(). The following code adds the newly created element to the document’s <body> element:
+
+	document.body.appendChild(div);
+
+Once the element has been added to the document tree, the browser renders it immediately. Any changes to the element after this point are immediately reflected by the browser.
+
