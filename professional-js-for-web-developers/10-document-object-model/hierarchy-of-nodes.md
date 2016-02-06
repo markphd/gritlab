@@ -275,3 +275,47 @@ The element can be added to the document tree using appendChild(), insertBefore(
 
 Once the element has been added to the document tree, the browser renders it immediately. Any changes to the element after this point are immediately reflected by the browser.
 
+### Element Children
+
+Elements may have any number of children and descendants since elements may be children of elements. The childNodes property contains all of the immediate children of the element, which may be other elements, text nodes, comments, or processing instructions. 
+
+	var ul = document.getElementById("myList");
+	var items = ul.getElementsByTagName("li");
+
+### The Text Type
+
+Text nodes are represented by the Text type and contain plain text that is interpreted literally and may contain escaped HTML characters but no HTML code. A Text node has the following characteristics:
+
+	nodeType is 3.
+	nodeName is "#text".
+	nodeValue is text contained in the node.
+	parentNode is an Element.
+	Child nodes are not supported.
+
+The following methods allow for manipulation of the text in the node:
+
+- appendData(text) — Appends text to the end of the node.
+
+- deleteData(offset, count) — Deletes count number of characters starting at position offset.
+
+- insertData(offset, text) — Inserts text at position offset.
+
+- replaceData(offset, count, text) — Replaces the text starting at offset through offset + count with text.
+
+- splitText(offset) — Splits the text node into two text nodes separated at position offset.
+
+- substringData(offset, count) — Extracts a string from the text beginning at position offset and continuing until offset + count.
+
+	<div>Hello World!</div>
+
+	var textNode = div.firstChild;  //or div.childNodes[0]
+
+Change value:
+
+	div.firstChild.nodeValue = "Some other message";
+
+As long as the node is currently in the document tree, the changes to the text node will be reflected immediately.
+
+### Creating Text Nodes
+
+
