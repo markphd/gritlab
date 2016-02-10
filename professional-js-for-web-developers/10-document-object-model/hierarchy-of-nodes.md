@@ -373,4 +373,55 @@ Splitting text nodes is used most often with DOM parsing techniques for extracti
 
 ### The Comment Type
 
+Comments are represented in the DOM by the Comment type. A Comment node has the following characteristics:
+
+- nodeType is 8.
+
+- nodeName is "#comment".
+
+- nodeValue is the content of the comment.
+
+- parentNode is a Document or Element.
+
+- Child nodes are not supported.
+
+- The Comment type inherits from the same base as the Text type, so it has all of the same string-manipulation methods except splitText(). 
+
+	<div id="myDiv"><!-- A comment --></div>
+
+the comment is a child node of the <div> element, which means it can be accessed like this:
+
+	var div = document.getElementById("myDiv");
+
+
+### The CDATASection Type	
+
+CDATA sections are specific to XML-based documents and are represented by the CDATASection type.
+
+
+### The DocumentType Type
+
+The DocumentType type is not used very often in web browsers and is supported in only Firefox, Safari, and Opera.
+
+
+### The DocumentFragment Type
+
+Of all the node types, the DocumentFragment type is the only one that has no representation in markup. 
+
+	var fragment = document.createDocumentFragment();
+	var ul = document.getElementById("myList");
+	var li = null;
+	                   
+	for (var i=0; i < 3; i++){
+	    li = document.createElement("li");
+	    li.appendChild(document.createTextNode("Item " + (i+1)));
+	    fragment.appendChild(li);
+	}
+	                   
+	ul.appendChild(fragment);    
+
+ The contents of a document fragment can be added to a document via appendChild() or insertBefore(). When a document fragment is passed in as an argument to either of these methods, all of the document fragment’s child nodes are added in that spot; the document fragment itself is never added to the document tree. 
+
+
+### The Attr Type
 
