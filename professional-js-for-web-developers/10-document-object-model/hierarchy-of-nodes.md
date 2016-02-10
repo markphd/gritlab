@@ -318,4 +318,59 @@ As long as the node is currently in the document tree, the changes to the text n
 
 ### Creating Text Nodes
 
+New text nodes can be created using the document.createTextNode() method, which accepts a single argument 
+
+	var textNode = document.createTextNode("<strong>Hello</strong> world!");
+
+When a text node is added as a sibling of another text node, the text in those nodes is displayed without any space between them.
+
+### Normalizing Text Nodes
+
+Sibling text nodes can be confusing in DOM documents since there is no simple text string that can’t be represented in a single text node. Still, it is not uncommon to come across sibling text nodes in DOM documents, so there is a method to join sibling text nodes together. This method is called normalize()
+
+
+When normalize() is called on a parent of two or more text nodes, those nodes are merged into one text node whose nodeValue is equal to the concatenation of the nodeValue properties of each text node. Here’s an example:
+
+	var element = document.createElement("div");
+	element.className = "message";
+	                   
+	var textNode = document.createTextNode("Hello world!");
+	element.appendChild(textNode);
+	                   
+	var anotherTextNode = document.createTextNode("Yippee!");
+	element.appendChild(anotherTextNode);
+	                   
+	document.body.appendChild(element);
+	                   
+	alert(element.childNodes.length);  //2
+	                   
+	element.normalize();
+	alert(element.childNodes.length);  //1
+	alert(element.firstChild.nodeValue);  //"Hello world!Yippee!"
+
+
+### Splitting Text Nodes
+
+The Text type has a method that does the opposite of normalize(): the splitText() method splits a text node into two text nodes, separating the nodeValue at a given offset. 
+
+	var element = document.createElement("div");
+	element.className = "message";
+	                   
+	var textNode = document.createTextNode("Hello world!");
+	element.appendChild(textNode);
+	                   
+	document.body.appendChild(element);
+	                   
+	var newNode = element.firstChild.splitText(5);
+	alert(element.firstChild.nodeValue);  //"Hello"
+	alert(newNode.nodeValue);             //" world!"
+	alert(element.childNodes.length);     //2
+
+In this example, the text node containing the text "Hello world!" is split into two text nodes at position 5. Position 5 contains the space between "Hello" and "world!", so the original text node has the string "Hello" and the new one has the text " world!" (including the space).
+
+Splitting text nodes is used most often with DOM parsing techniques for extracting data from text nodes.
+
+
+### The Comment Type
+
 
