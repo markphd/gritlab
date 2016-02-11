@@ -425,3 +425,19 @@ Of all the node types, the DocumentFragment type is the only one that has no rep
 
 ### The Attr Type
 
+Element attributes are represented by the Attr type in the DOM. The Attr type constructor and prototype are accessible in all browsers, including Internet Explorer beginning with version 8. Technically, attributes are nodes that exist in an element’s attributes property.
+
+Even though they are nodes, attributes are not considered part of the DOM document tree. Attribute nodes are rarely referenced directly, with most developers favoring the use of getAttribute(), setAttribute(), and removeAttribute().
+
+	var attr = document.createAttribute("align");
+	attr.value = "left";
+	element.setAttributeNode(attr);
+	                   
+	alert(element.attributes["align"].value);       //"left"
+	alert(element.getAttributeNode("align").value); //"left"
+	alert(element.getAttribute("align"));           //"left"
+
+Once the attribute is added, it can be accessed in any number of ways: via the attributes property, using getAttributeNode(), or using getAttribute(). Both attributes and getAttributeNode() return the actual Attr node for the attribute, whereas getAttribute() returns only the attribute value.
+
+
+### WORKING WITH THE DOM
