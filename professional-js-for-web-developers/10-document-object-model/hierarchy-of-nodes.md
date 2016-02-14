@@ -538,3 +538,19 @@ insertCell(pos) — Inserts a cell in the given position in the cells collection
 
 ### Using NodeLists
 
+Understanding a NodeList object and its relatives, NamedNodeMap and HTMLCollection, is critical to a good understanding of the DOM as a whole. Each of these collections is considered “live,” which is to say that they are updated when the document structure changes such that they are always current with the most accurate information. 
+
+
+### SUMMARY
+
+The Document Object Model (DOM) is a language-independent API for accessing and manipulating HTML and XML documents. DOM Level 1 deals with representing HTML and XML documents as a hierarchy of nodes that can be manipulated to change the appearance and structure of the underlying documents using JavaScript.
+
+The DOM is made up of a series of node types, as described here:
+
+The base node type is Node, which is an abstract representation of an individual part of a document; all other types inherit from Node.
+The Document type represents an entire document and is the root node of a hierarchy. In JavaScript, the document object is an instance of Document, which allows for querying and retrieval of nodes in a number of different ways.
+An Element node represents all HTML or XML elements in a document and can be used to manipulate their contents and attributes.
+Other node types exist for text contents, comments, document types, the CDATA section, and document fragments.
+DOM access works as expected in most cases, although there are often complications when working with `script` and `style` elements. Since these elements contain scripting and stylistic information, respectively, they are often treated differently in browsers than other elements.
+
+> Perhaps the most important thing to understand about the DOM is how it affects overall performance. DOM manipulations are some of the most expensive operations that can be done in JavaScript, with NodeList objects being particularly troublesome. NodeList objects are “live,” meaning that a query is run every time the object is accessed. Because of these issues, it is best to minimize the number of DOM manipulations.
