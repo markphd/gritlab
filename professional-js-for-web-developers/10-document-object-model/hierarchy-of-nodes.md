@@ -474,5 +474,67 @@ A property called text exists on all script elements that can be used specifical
 
 ### Dynamic Styles
 
+Similar to dynamic scripts, dynamic styles don’t exist on the page when it is loaded initially; rather, they are added after the page has been loaded.
 
+Consider this typical link element:
+
+	<link rel="stylesheet" type="text/css" href="styles.css">
+
+This element can just as easily be created using the following DOM code:
+
+	var link = document.createElement("link");
+	link.rel = "stylesheet";
+	link.type = "text/css";
+	link.href = "styles.css";
+	var head = document.getElementsByTagName("head")[0];
+	head.appendChild(link);
+
+The technique can be generalized into the following function:
+
+	function loadStyles(url){
+	    var link = document.createElement("link");
+	    link.rel = "stylesheet";
+	    link.type = "text/css";
+	    link.href = url;
+	    var head = document.getElementsByTagName("head")[0];
+	    head.appendChild(link);    
+	}
+
+The loadStyles() function can then be called like this:
+
+	loadStyles("styles.css");
+
+
+### Manipulating Tables
+
+One of the most complex structures in HTML is the `table` element. Creating new tables typically means numerous tags for table rows, table cells, table headers, and so forth. Because of this complexity, using the core DOM methods to create and change tables can require a large amount of code. 
+
+The `table` element adds the following:
+
+caption — Pointer to the `ca`tion> element (if it exists).
+tBodies — An HTMLCollection of `tbody` elements.
+tFoot — Pointer to the `tfoot` element (if it exists).
+tHead — Pointer to the `thead` element (if it exists).
+rows — An HTMLCollection of all rows in the table.
+createTHead() — Creates a `thead` element, places it into the table, and returns a reference.
+createTFoot() — Creates a `tfoot` element, places it into the table, and returns a reference.
+createCaption() — Creates a `caption` element, places it into the table, and returns a reference.
+deleteTHead() — Deletes the `thead` element.
+deleteTFoot() — Deletes the `tfoot` element.
+deleteCaption() — Deletes the `caption` element.
+deleteRow(pos) — Deletes the row in the given position.
+insertRow(pos) — Inserts a row in the given position in the rows collection.
+The `tbody> element adds the following:
+
+rows — An HTMLCollection of rows in the `tbody` element.
+deleteRow(pos) — Deletes the row in the given position.
+insertRow(pos) — Inserts a row in the given position in the rows collection and returns a reference to the new row.
+The `tr` element adds the following:
+
+cells — An HTMLCollection of cells in the `tr` element.
+deleteCell(pos) — Deletes the cell in the given position.
+insertCell(pos) — Inserts a cell in the given position in the cells collection and returns a reference to the new cell.
+
+
+### Using NodeLists
 
