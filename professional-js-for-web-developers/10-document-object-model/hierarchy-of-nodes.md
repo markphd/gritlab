@@ -441,3 +441,38 @@ Once the attribute is added, it can be accessed in any number of ways: via the a
 
 
 ### WORKING WITH THE DOM
+
+Browsers are filled with hidden gotchas and incompatibilities that make coding certain parts of the DOM more complicated than coding its other parts.
+
+The script element is used to insert JavaScript code into the page, either using by the src attribute to include an external file or by including text inside the element itself. 
+
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src = "client.js";
+	document.body.appendChild(script);
+
+
+This process can be generalized into the following function:
+
+	function loadScript(url){
+	    var script = document.createElement("script");
+	    script.type = "text/javascript";
+	    script.src = url;
+	    document.body.appendChild(script);
+	}
+
+This function can now be used to load external JavaScript files via the following call:
+
+	loadScript("client.js");
+
+A property called text exists on all script elements that can be used specifically to assign JavaScript code to, as in the following example:
+
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.text = "function sayHi(){alert('hi');}";
+	document.body.appendChild(script);
+
+### Dynamic Styles
+
+
+
